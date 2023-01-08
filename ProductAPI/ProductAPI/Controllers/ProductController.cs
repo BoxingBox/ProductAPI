@@ -17,11 +17,19 @@ namespace ProductAPI.Controllers
         [Route("{productId}")]
         public ActionResult<IEnumerable<ProductDto>> GetProduct(int productId)
         {
+            if (ModelState.IsValid)
+            { 
             ProductDto Selection = ProductDataStore.Current.Products.FirstOrDefault(c => c.Id == productId);
 
             if (Selection == null) { return NotFound(); }
+            
 
             return Ok(Selection);
+            }
+            else 
+            {
+                throw new Exception("ID must be a positive number");
+            }
         }
     }
 }

@@ -35,23 +35,27 @@ namespace ProductAPI.Controllers
         [HttpPost]                                                          //GENERIC POST TO BE IMPROVED
         public ActionResult<ProductDto> CreateProduct(int productId, ProductCreationDto productCreation)
         {
-            ProductDto ?Product = ProductDataStore.Current.Products.FirstOrDefault(c => c.Id == productId);
-
-            if (Product == null) { return NotFound(); }
-
-            var MaxProductId = ProductDataStore.Current.Products.Max(p => p.Id);         //TO BE IMPROVED
-
-            var finalProduct = new ProductDto
+            if (ModelState.IsValid)
             {
-                Id = ++MaxProductId,
-                Price = productCreation.Price,
-                Description = productCreation.Description,
-                Name = productCreation.Name
-            };
+                ProductDto? Product = ProductDataStore.Current.Products.FirstOrDefault(c => c.Id == productId);
 
-            ProductDataStore.Current.Products.Add(finalProduct);
+                if (Product == null) { return NotFound(); }
 
-            return CreatedAtRoute("GetProduct", new { productId = productId }, finalProduct);
+                var MaxProductId = ProductDataStore.Current.Products.Max(p => p.Id);         //TO BE IMPROVED
+
+                var finalProduct = new ProductDto
+                {
+                    Id = ++MaxProductId,
+                    Price = productCreation.Price,
+                    Description = productCreation.Description,
+                    Name = productCreation.Name
+                };
+
+                ProductDataStore.Current.Products.Add(finalProduct);
+
+                return CreatedAtRoute("GetProduct", new { productId = productId }, finalProduct);
+            }
+            else return BadRequest( new { error ="Something went wrong"});
 
         }
     }

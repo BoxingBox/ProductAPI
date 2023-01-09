@@ -32,7 +32,9 @@ namespace ProductAPI.Controllers
             }
         }
 
-        [HttpPost]                                                          //GENERIC POST TO BE IMPROVED
+
+
+        [HttpPost]             //GENERIC POST TO BE IMPROVED WITH ENTITY FRAMEWORK
         public ActionResult<ProductDto> CreateProduct(int productId, ProductCreationDto productCreation)
         {
             if (ModelState.IsValid)
@@ -58,5 +60,25 @@ namespace ProductAPI.Controllers
             else return BadRequest( new { error ="Something went wrong"});
 
         }
+
+
+        [HttpPut("{productId}")]   //GENERIC PUT TO BE IMPROVED WITH ENTITY FRAMEWORK
+
+        public ActionResult<ProductDto> UpdateProduct(int productId, ProductUpdateDto productUpdate)
+        {
+            var product = ProductDataStore.Current.Products.FirstOrDefault(c => c.Id == productId);
+
+            if(product == null) { return NotFound("This product id does not exist"); }
+
+            product.Price = productUpdate.Price;
+            product.Description = productUpdate.Description;
+            product.Name = productUpdate.Name;
+
+            return NoContent();
+        }
     }
+
+
+    
+
 }

@@ -76,6 +76,19 @@ namespace ProductAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{productId}")]
+        public ActionResult<ProductDto> DeleteProduct (int productId)
+        {
+            var product = ProductDataStore.Current.Products.FirstOrDefault(c => c.Id == productId);
+
+            if (product == null) { return NotFound("This product id does not exist"); }
+
+            ProductDataStore.Current.Products.Remove(product);
+
+            return NoContent();
+        }
+
     }
 
 

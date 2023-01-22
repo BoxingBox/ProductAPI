@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProductAPI.DbContexts;
+using ProductAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ProductContext>(
     dbContextOptions =>dbContextOptions.UseSqlite("Data Source=ProductAPI.db"));
+builder.Services.AddSingleton<IProductService, ProductService>();
 
 var app = builder.Build();
 

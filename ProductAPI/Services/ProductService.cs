@@ -1,17 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ProductAPI.DbContexts;
 using ProductAPI.Entities;
 using ProductAPI.Models;
+using ProductAPI.Profiles;
 
 namespace ProductAPI.Services;
 
 public class ProductService : IProductService
 {
     private readonly ProductContext _productContext;
+    private readonly IMapper? _mapper;
 
-    public ProductService(ProductContext productContext)
+
+    public ProductService(ProductContext productContext, IMapper mapper)
     {
         _productContext = productContext;
+        _mapper = mapper;
     }
 
     public async Task<IEnumerable<Product>> GetProductsAsync() => await _productContext.Products.ToListAsync(); //todo: automapper
@@ -25,12 +30,14 @@ public class ProductService : IProductService
             return null;
         }
 
-        var productDto = new ProductDto //todo: automapper
-        {
-            Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price
-        };
+        var productDto = _mapper.Map<ProductDto>(product);
 
-        return productDto;
+        //var productDto = new ProductDto //todo: automapper
+        //{
+        //    Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price
+        //};
+
+        return (ProductDto?)productDto;
     }
 
     public async Task<Product> CreateProductAsync(ProductCreationDto newProduct) //todo: automapper
@@ -52,6 +59,7 @@ public class ProductService : IProductService
         {
             return null;
         }
+
 
         product.Price = updatedProduct.Price;
         product.Description = updatedProduct.Description;

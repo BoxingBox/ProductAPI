@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProductAPI.DbContexts;
+using ProductAPI.Logging;
 using ProductAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ProductContext>(
     dbContextOptions =>dbContextOptions.UseSqlite("Data Source=ProductAPI.db"));
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddTransient<ILogger, Logger<LoggingContext>>();  // ?
+builder.Services.AddTransient<ILoggingContext, LoggingContext>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 

@@ -3,12 +3,14 @@ using ProductAPI.Entities;
 using ProductAPI.Models;
 using System;
 
+
 namespace ProductAPI.DbContexts
 {
     public class ProductContext : DbContext
 
     {
         public DbSet<Product> Products { get; set; } = null!;
+        
 
         public ProductContext(DbContextOptions<ProductContext> options) : base(options)
         {

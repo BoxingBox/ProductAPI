@@ -42,9 +42,15 @@ public class ProductService : IProductService
 
     public async Task<Product> CreateProductAsync(ProductCreationDto newProduct) //todo: automapper
     {
-        var productToBeSaved = new Product(newProduct.Name) { Description = newProduct.Description, Price = newProduct.Price };
+        var productToBeSaved = new Product(newProduct.Name)
+        {
+            Description = newProduct.Description,
+            Price = newProduct.Price
+        };
 
-        _productContext.Products.Add(productToBeSaved);
+        //var productToBeSaved = _mapper.Map<Product>(newProduct);
+
+        _productContext.Products.Add((productToBeSaved));
 
         await _productContext.SaveChangesAsync();
 

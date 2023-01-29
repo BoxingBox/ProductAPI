@@ -10,7 +10,7 @@ namespace ProductAPI.Services;
 public class ProductService : IProductService
 {
     private readonly ProductContext _productContext;
-    private readonly IMapper? _mapper;
+    private readonly IMapper _mapper;
 
 
     public ProductService(ProductContext productContext, IMapper mapper)

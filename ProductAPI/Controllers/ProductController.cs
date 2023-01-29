@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
-using ProductAPI.DbContexts;
-using ProductAPI.Entities;
+using ProductAPI.Extensions;
 using ProductAPI.Models;
+using ProductAPI.Responses;
 using ProductAPI.Services;
 
 namespace ProductAPI.Controllers
@@ -45,11 +43,11 @@ namespace ProductAPI.Controllers
 
         [HttpPost] //GENERIC POST TO BE IMPROVED WITH ENTITY FRAMEWORK
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProductDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Error))]
         public async Task<IActionResult> CreateProduct(ProductCreationDto productCreation)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(ModelState.ToValidationError());
 
             var createdProduct = await _productService.CreateProductAsync(productCreation);
 
@@ -76,12 +74,12 @@ namespace ProductAPI.Controllers
 
         [HttpPut("{productId:int}")] //GENERIC PUT TO BE IMPROVED WITH ENTITY FRAMEWORK
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Error))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> UpdateProduct(int productId, ProductUpdateDto productUpdate)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(ModelState.ToValidationError());
 
             var product = await _productService.UpdateProductAsync(productId, productUpdate);
 

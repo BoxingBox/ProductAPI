@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ProductAPI.DbContexts;
 using ProductAPI.Entities;
 using ProductAPI.Models;
+using ProductAPI.Responses;
 
 namespace ProductAPI.Profiles
 {
@@ -12,7 +14,6 @@ namespace ProductAPI.Profiles
         {
             CreateMap<ProductDto, Product>().ReverseMap();
             CreateMap<ProductCreationDto, Product>().ReverseMap();
-
         }
     }
 }

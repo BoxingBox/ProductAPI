@@ -22,7 +22,8 @@ namespace ProductAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductDto>))]
         public async Task<IActionResult> GetProducts()
         {
-            return Ok(await _productService.GetProductsAsync()); //todo: automapper
+            return Ok(await _productService.GetProductsAsync());
+
         }
 
         [HttpGet("{productId:int}", Name = "GetProduct")]

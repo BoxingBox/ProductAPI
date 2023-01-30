@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ProductAPI.Models;
 
 namespace ProductAPI.Entities
 {
@@ -26,5 +27,7 @@ namespace ProductAPI.Entities
 
         [Required]
         public decimal Price { get; set; } = 0;
+
+        public static explicit operator Product(ProductUpdateDto v) => throw new NotImplementedException();
     }
 }

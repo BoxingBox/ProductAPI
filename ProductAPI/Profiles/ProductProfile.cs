@@ -12,8 +12,10 @@ namespace ProductAPI.Profiles
 
         public ProductProfile()
         {
+            CreateMap<Product, ProductDto>();
             CreateMap<ProductDto, Product>().ReverseMap();
             CreateMap<ProductCreationDto, Product>().ReverseMap();
+            CreateMap<ProductUpdateDto, Product>().ReverseMap();
         }
     }
 }

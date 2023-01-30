@@ -19,7 +19,13 @@ public class ProductService : IProductService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<Product>> GetProductsAsync() => await _productContext.Products.ToListAsync(); //todo: automapper
+    public async Task<IEnumerable<Product>> GetProductsAsync()
+    {
+        var products = await _productContext.Products.ToListAsync();
+
+        return _mapper.Map<IEnumerable<Product>>(products);
+
+    }//await _productContext.Products.ToListAsync(); //todo: automapper
 
     public async Task<ProductDto?> GetProductAsync(int productId)
     {
@@ -32,23 +38,16 @@ public class ProductService : IProductService
 
         var productDto = _mapper.Map<ProductDto>(product);
 
-        //var productDto = new ProductDto //todo: automapper
-        //{
-        //    Id = product.Id, Name = product.Name, Description = product.Description, Price = product.Price
-        //};
+
 
         return (ProductDto?)productDto;
     }
 
-    public async Task<Product> CreateProductAsync(ProductCreationDto newProduct) //todo: automapper
+    public async Task<Product> CreateProductAsync(ProductCreationDto newProduct) 
     {
-        var productToBeSaved = new Product(newProduct.Name)
-        {
-            Description = newProduct.Description,
-            Price = newProduct.Price
-        };
 
-        //var productToBeSaved = _mapper.Map<Product>(newProduct);
+
+        var productToBeSaved = _mapper.Map<Product>(newProduct);
 
         _productContext.Products.Add((productToBeSaved));
 
@@ -57,7 +56,7 @@ public class ProductService : IProductService
         return productToBeSaved;
     }
 
-    public async Task<Product?> UpdateProductAsync(int productId, ProductUpdateDto updatedProduct)//todo: automapper
+    public async Task<Product?> UpdateProductAsync(int productId, ProductUpdateDto updatedProduct)
     {
         var product = await _productContext.Products.FirstOrDefaultAsync(c => c.Id == productId);
 
@@ -67,9 +66,9 @@ public class ProductService : IProductService
         }
 
 
-        product.Price = updatedProduct.Price;
-        product.Description = updatedProduct.Description;
-        product.Name = updatedProduct.Name;
+        _mapper.Map(updatedProduct, product);
+
+
 
         await _productContext.SaveChangesAsync();
 

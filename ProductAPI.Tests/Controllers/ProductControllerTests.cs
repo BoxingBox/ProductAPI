@@ -11,6 +11,7 @@ namespace ProductAPI.Tests.Controllers;
 public class ProductControllerTests
 {
     private readonly Mock<IProductService> _productServiceMock = new();
+    
 
     [Fact]
     public async Task GetProduct_WhenCalled_ReturnsNotFound()
@@ -52,4 +53,33 @@ public class ProductControllerTests
         result2.Should().NotBeNull();
         result2?.StatusCode.Should().Be(StatusCodes.Status404NotFound);
     }
+
+    
+
+    [Fact]
+    public async Task PostProduct_WhenModelStateIsInvalid_ReturnsBadRequest()
+    {
+        // Arrange
+        var productCreation = new ProductCreationDto
+        {
+            Name = "",
+            Description = "Description for Product 1",
+            Price = 100
+        };
+        var productServiceMock = new Mock<IProductService>();
+        var controller = new ProductController(productServiceMock.Object);
+        controller.ModelState.AddModelError("Name", "Name is required");
+
+        // Act
+        var result = await controller.CreateProduct(productCreation) as BadRequestObjectResult;
+
+        // Assert
+        productServiceMock.Verify(x => x.CreateProductAsync(It.IsAny<ProductCreationDto>()), Times.Never);
+        result.Should().NotBeNull();
+        
+    }
+
+
+
 }
+

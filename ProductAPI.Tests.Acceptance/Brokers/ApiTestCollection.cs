@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace ProductAPI.Tests.Acceptance.Brokers
 {
-    internal class ApiTestCollection
+
+    [CollectionDefinition(nameof(ApiTestCollection))]
+    public class ApiTestCollection : ICollectionFixture<ProductApiBroker>
     {
+
     }
 }

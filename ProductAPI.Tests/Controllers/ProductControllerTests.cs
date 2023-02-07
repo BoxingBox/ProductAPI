@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Models;
 
+
 namespace ProductAPI.Tests.Controllers;
 
 public class ProductControllerTests
@@ -77,6 +78,23 @@ public class ProductControllerTests
         productServiceMock.Verify(x => x.CreateProductAsync(It.IsAny<ProductCreationDto>()), Times.Never);
         result.Should().NotBeNull();
         
+    }
+
+    [Fact]
+    public async Task DeleteProduct_ShouldReturnNoContent()
+    {
+        // Arrange
+        var mockProductService = new Mock<IProductService>();
+        mockProductService.Setup(x => x.DeleteProductAsync(It.IsAny<int>()))
+            .Returns(Task.FromResult((bool?)null));
+        var controller = new ProductController(mockProductService.Object);
+
+        // Act
+        var result = await controller.DeleteProduct(1);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        mockProductService.Verify(x => x.DeleteProductAsync(1), Times.Once());
     }
 
 

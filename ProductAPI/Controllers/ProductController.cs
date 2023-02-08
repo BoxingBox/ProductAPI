@@ -11,6 +11,7 @@ namespace ProductAPI.Controllers
     [Route("api/products")]
     public class ProductController : ControllerBase
     {
+
         private readonly IProductService _productService;
 
         public ProductController(IProductService productService)

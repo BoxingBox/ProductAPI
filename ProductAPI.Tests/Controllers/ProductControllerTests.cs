@@ -12,7 +12,29 @@ namespace ProductAPI.Tests.Controllers;
 public class ProductControllerTests
 {
     private readonly Mock<IProductService> _productServiceMock = new();
+
+    private ProductController _controller;
+    private Mock<IProductService> _mockProductService;
+
+    public ProductControllerTests()
+    {
+        _mockProductService = new Mock<IProductService>();
+        _controller = new ProductController(_mockProductService.Object);
+    }
+
+    [Fact]
     
+    public async Task UpdateProduct_ReturnsNotFound_WhenProductDoesNotExist()
+    {
+        int productId = 1;
+        var productUpdate = new ProductUpdateDto();
+
+        var result = await _controller.UpdateProduct(productId, productUpdate);
+
+        result.Should().BeOfType<NotFoundObjectResult>()
+              .Which.Value.Should().BeOfType<string>()
+              .And.Subject.Should().Be("This product id does not exist");
+    }
 
     [Fact]
     public async Task GetProduct_WhenCalled_ReturnsNotFound()

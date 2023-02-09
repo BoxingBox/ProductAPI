@@ -37,6 +37,29 @@ public class ProductControllerTests
     }
 
     [Fact]
+    public async Task UpdateProduct_Returns_NotFound_When_Given_Wrong_Id()
+    {
+        // Arrange
+        
+        var productServiceMock = new Mock<IProductService>();
+        var controller = new ProductController(productServiceMock.Object);
+        var productId = Int32.MaxValue;
+        var productUpdate = new ProductUpdateDto
+        { Name = "Test Product", Description="Test Desc", Price = 10 };
+
+        // Act
+        var result = await controller.UpdateProduct(productId, productUpdate);
+        
+
+        // Assert
+        result.Should().BeOfType<NotFoundObjectResult>();
+        var okResult = result as NotFoundObjectResult;
+
+        okResult.StatusCode.Should().Be(404);
+        okResult.Value.Should().BeOfType<String>();
+    }
+
+    [Fact]
     public async Task GetProduct_WhenCalled_ReturnsNotFound()
     {
         // Arrange

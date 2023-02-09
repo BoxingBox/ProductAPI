@@ -59,6 +59,30 @@ public class ProductControllerTests
         okResult.Value.Should().BeOfType<String>();
     }
 
+    //[Fact]   Giati den doulevei??
+    //public async Task UpdateProduct_Returns_CorrectResult_When_Given_Valid_Id()
+    //{
+    //    // Arrange
+
+    //    var productServiceMock = new Mock<IProductService>();
+    //    var controller = new ProductController(productServiceMock.Object);
+    //    ProductDto productToBeUpdated = new ProductDto();
+    //    var productId = 4;
+    //    var productUpdate = new ProductUpdateDto
+    //    { Name = "Test Product", Description = "Test Desc", Price = 10 };
+
+    //    // Act
+    //    var result = await controller.UpdateProduct(productId, productUpdate);
+
+
+    //    // Assert
+    //    result.Should().BeOfType<OkObjectResult>();
+    //    var okResult = result as OkObjectResult;
+
+    //    okResult.StatusCode.Should().Be(200);
+    //    okResult.Value.Should().BeOfType<ProductDto>();
+    //}
+
     [Fact]
     public async Task GetProduct_WhenCalled_ReturnsNotFound()
     {
